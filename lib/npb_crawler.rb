@@ -7,20 +7,10 @@ class NpbCrawler
 
   date = ARGV[0]
   HOST_URL = "https://baseball.yahoo.co.jp/npb"
-  RESULT_URL = HOST_URL << "/schedule/?&date=#{date}"
-  RECORD_URL = HOST_URL << "/schedule/stats"
+  RESULT_URL = HOST_URL + "/schedule/?&date=#{date}"
 
   def initialize(options=nil)
     @options = options
-  end
-
-  ## TODO
-  def records
-    Anemone.crawl(RESULT_URL, @options) do |anemone|
-      anemone.on_every_page do |page|
-        doc = Nokogiri::HTML.parse(page.body.toutf8)
-      end
-    end
   end
 
   # result
@@ -67,5 +57,3 @@ class NpbCrawler
   end
 end
 
-npb_crawler = NpbCrawler.new({deep_limit: 1})
-npb_crawler.result
