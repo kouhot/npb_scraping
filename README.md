@@ -1,5 +1,6 @@
 ## crawling npb
 
-WORK IN PROGRESS
+- get data of npb
+
 
 
