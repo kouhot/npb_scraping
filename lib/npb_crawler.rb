@@ -1,6 +1,7 @@
 require 'anemone'
 require 'nokogiri'
 require 'kconv'
+require 'pry'
 
 class NpbCrawler
   attr_accessor :options
@@ -8,6 +9,7 @@ class NpbCrawler
   date = ARGV[0]
   HOST_URL = "https://baseball.yahoo.co.jp/npb"
   RESULT_URL = HOST_URL + "/schedule/?&date=#{date}"
+  DOBAYASHI_URL = HOST_URL + "/player/900430/"
 
   def initialize(options=nil)
     @options = options
@@ -55,5 +57,18 @@ class NpbCrawler
       end
     end
   end
-end
 
+  # Get specific player's result
+  def get_dobayashi_result
+    Anemone.crawl(DOBAYASHI_URL, depth_limit: 0) do |anemone|
+      anemone.on_every_page do |page|
+        doc = Nokogiri::HTML.parse(page.body.toutf8)
+        doc.xpath('//div[@class="PlayerAdBox mb15"]').each do |node|
+          node.xpath('//tr[@class="yjM"]/td').each do |elem|
+            p elem.text
+          end
+        end
+      end
+    end
+  end
+end
