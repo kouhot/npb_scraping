@@ -60,7 +60,7 @@ class NpbCrawler
 
   # Get specific player's result
   def get_dobayashi_result
-    Anemone.crawl(DOBAYASHI_URL, depth_limit: 0) do |anemone|
+    Anemone.crawl(DOBAYASHI_URL, @options) do |anemone|
       anemone.on_every_page do |page|
         doc = Nokogiri::HTML.parse(page.body.toutf8)
         doc.xpath('//div[@class="PlayerAdBox mb15"]').each do |node|
